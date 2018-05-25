@@ -1,0 +1,24 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "description": "Excel API",
+    "version": "1.0.0",
+    "title": "Excel API",
+    "contact": {
+      "email": "info@icris.nl"
+    },
+    "license": {
+      "name": "none",
+      "url": "http://localhost"
+    }
+  },
+  "host": "",
+  "basePath": "/api",
+  "tags": [
+  ],
+  "schemes": [
+    "http"
+  ],
+  "paths": {
+  }
+}

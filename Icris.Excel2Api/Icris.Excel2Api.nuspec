@@ -1,0 +1,26 @@
+<?xml version="1.0"?>
+<package >
+  <metadata>
+    <id>Icris.Excel2Api</id>
+    <version>0.1.0</version>
+    <title>Icris.Excel2Api</title>
+    <authors>Icris</authors>
+    <owners>Icris</owners>
+    <licenseUrl>https://github.com/boonzaai/Icris.Excel2Api/blob/master/LICENSE</licenseUrl>
+    <projectUrl>https://github.com/boonzaai/Icris.Excel2Api</projectUrl>
+    <iconUrl>https://raw.githubusercontent.com/boonzaai/GremlinQuery.net/master/Icris.GremlinQuery/Icris.GremlinQuery/final_logo_owlonly.png</iconUrl>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <description>A convention-based library that exposes your excel calculations as a web api (including auto-generated Swagger docs)</description>
+    <releaseNotes>First version.</releaseNotes>
+    <copyright>Copyright 2018 http://www.icris.nl</copyright>
+    <tags>Excel WebAPI Swagger Services REST</tags>
+    <dependencies>
+        <dependency id="Newtonsoft.Json" version="7.0.1" />    
+    </dependencies>
+
+  </metadata>
+  <files>
+    <file src="bin\release\Icris.Excel2Api.dll" target="lib\Icris.Excel2Api.dll" />
+    <file src="bin\release\Icris.Excel2Api.xml" target="lib\Icris.Excel2Api.xml" />
+  </files>
+</package>

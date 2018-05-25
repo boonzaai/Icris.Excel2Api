@@ -1,0 +1,36 @@
+{
+    "get": {
+      "tags": [
+        "data"
+      ],
+      "summary": "get available months",
+      "description": "",
+      "operationId": "",
+      "produces": [
+        "application/json",
+        "text/csv"
+      ],
+      "parameters": [
+        {
+          "in": "path",
+          "name": "year",
+          "type": "string",
+          "required": true
+        }
+      ],
+      "responses": {
+        "200": {
+          "description": "available months",
+          "schema": {
+            "type": "array",
+            "items": {
+              "type": "integer"
+            }
+          }
+        },
+        "400": {
+          "description": "bad input parameter"
+        }
+      }
+    }
+}
