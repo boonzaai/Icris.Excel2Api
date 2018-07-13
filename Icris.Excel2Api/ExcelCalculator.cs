@@ -38,14 +38,26 @@ namespace Icris.Excel2Api
         {
             var input = this.Model.Inputs[key];
             var inputsheet = (Worksheet)this.workbook.Sheets["Input"];
-            inputsheet.Cells[input.Row, 4] = value;
-            this.Model.Inputs[key].Value = value;
             var valid = (bool)inputsheet.get_Range($"E{input.Row}").Value;
-            this.Model.Inputs[key].Valid = valid;
             var enabled = (bool)inputsheet.get_Range($"F{input.Row}").Value;
-            this.Model.Inputs[key].Enabled = enabled;
+            
+            //refresh the model
+            //TODO: Seeif this works....
+            if(enabled)
+                inputsheet.Cells[input.Row, 4] = value;
+            foreach (var kv in this.Model.Inputs)
+            {
+                this.Model.Inputs[kv.Key].Value = (inputsheet.get_Range($"D{kv.Value.Row}")).Value;
+                this.Model.Inputs[kv.Key].Valid = (bool)(inputsheet.get_Range($"E{kv.Value.Row}")).Value;
+            }
+            //this.Model.Inputs[key].Value = value;
+            //this.Model.Inputs[key].Valid = valid;
+            //var enabled = (bool)inputsheet.get_Range($"F{input.Row}").Value;
+            //this.Model.Inputs[key].Enabled = enabled;
+
             return valid;
         }
+
 
 
 
@@ -202,6 +214,11 @@ namespace Icris.Excel2Api
             });
 
             return swaggerdoc;
+        }
+
+        public void Validate()
+        {
+            //throw new NotImplementedException();
         }
 
         JObject OutputsToSwaggerDefinition()
