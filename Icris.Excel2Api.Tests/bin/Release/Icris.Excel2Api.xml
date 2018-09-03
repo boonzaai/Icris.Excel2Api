@@ -14,6 +14,12 @@
             The input/outpu model of the excel sheet
             </summary>
         </member>
+        <member name="M:Icris.Excel2Api.ExcelCalculator.#ctor(System.String,System.Boolean)">
+            <summary>
+            Create an excelcalculator based on a the given template file.
+            </summary>
+            <param name="filename"></param>
+        </member>
         <member name="M:Icris.Excel2Api.ExcelCalculator.SetInput(System.String,System.Object)">
             <summary>
             Set an input value by key/value.

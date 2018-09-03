@@ -10,10 +10,7 @@ namespace Icris.Excel2Api.Tests
     [TestClass]
     public class ReadExcelModelTests
     {
-        Application excel = new Microsoft.Office.Interop.Excel.Application();
         string tempfile = Path.GetTempFileName();
-        Workbooks workbooks;
-        Workbook workbook;
 
         void GetTestWorkbook()
         {
@@ -29,34 +26,18 @@ namespace Icris.Excel2Api.Tests
                     }
                 }
             }
-            workbooks = excel.Workbooks;
-            workbook = workbooks.Open(tempfile);
         }
         void Cleanup()
         {
-            //Excel process is a quite persistent bugger, it won't die without a lot of fuss...
-            workbook.Close(false);
-            workbooks.Close();
-            excel.Quit();
-            Marshal.ReleaseComObject(workbook);
-            Marshal.ReleaseComObject(workbooks);
-            Marshal.ReleaseComObject(excel);
-            workbook = null;
-            workbooks = null;
-            excel = null;
-            GC.Collect();
         }
         [TestMethod]
         public void TestTestModelExtraction()
         {
             GetTestWorkbook();
-            //var sheet = (Worksheet)wb.Sheets["Input"];
-            //var val = (sheet.get_Range("A2")).Value;
-            var calculator = new ExcelCalculator(workbook);
+            var calculator = new ExcelCalculator(tempfile);
             var model = calculator.Model;
             Assert.AreEqual(4, model.Inputs.Count);
             Assert.AreEqual(4, model.Outputs.Count);
-
             Cleanup();
         }
 
@@ -64,11 +45,9 @@ namespace Icris.Excel2Api.Tests
         public void TestTestModelValidation()
         {
             GetTestWorkbook();
-
-            var model = new ExcelCalculator(workbook);
+            var model = new ExcelCalculator(tempfile);
             Assert.AreEqual(false, model.SetInput("Width", 12));
             Assert.AreEqual(true, model.SetInput("Length", 8));
-
             Cleanup();
         }
 
@@ -77,8 +56,7 @@ namespace Icris.Excel2Api.Tests
         public void TestTestModelCalculation()
         {
             GetTestWorkbook();
-
-            var model = new ExcelCalculator(workbook);
+            var model = new ExcelCalculator(tempfile);
             model.SetInput("Width", 3);
             model.SetInput("Height", 3);
             model.SetInput("Length", 3);
@@ -92,10 +70,22 @@ namespace Icris.Excel2Api.Tests
         public void TestTestModelSwagger()
         {
             GetTestWorkbook();
-            var model = new ExcelCalculator(workbook);
+            var model = new ExcelCalculator(tempfile);
 
             Assert.IsNotNull(model.ToSwagger("test"));
             Cleanup();
+        }
+        [TestMethod]
+        public void TestTestAdvancedFormula()
+        {
+            GetTestWorkbook();
+            var model = new ExcelCalculator(tempfile);
+            model.SetInput("Width", 2);
+            model.SetInput("Height", 2);
+            model.SetInput("Length", 2);
+            model.SetInput("Material", "Aluminum");
+
+            Assert.AreEqual(0.0216, model.GetOutput("Weight"));
         }
     }
 }

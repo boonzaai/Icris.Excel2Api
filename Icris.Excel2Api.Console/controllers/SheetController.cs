@@ -25,11 +25,9 @@ namespace Icris.Excel2Api.Console.controllers
             var sheet = path.Split('/')[0];
             var action = path.Split('/')[1];
 
-            Microsoft.Office.Interop.Excel.Application excel = new Microsoft.Office.Interop.Excel.Application();
-            var wbs = excel.Workbooks;
-            var wb = wbs.Open(
-                Path.GetDirectoryName(System.Reflection.Assembly.GetEntryAssembly().Location)
-                + $"\\sheets\\{sheet}.xlsx");
+            var wb = Path.GetDirectoryName(System.Reflection.Assembly.GetEntryAssembly().Location)
+                + $"\\sheets\\{sheet}.xlsx";
+
             var definition = new JObject();
             //new Model()
             //new ExcelCalculato
@@ -64,16 +62,6 @@ namespace Icris.Excel2Api.Console.controllers
                     break;
             }
             //Excel process is a quite persistent bugger, it won't die without a lot of fuss...
-            wb.Close(false);
-            wbs.Close();
-            excel.Quit();
-            Marshal.ReleaseComObject(wb);
-            Marshal.ReleaseComObject(wbs);
-            Marshal.ReleaseComObject(excel);
-            wb = null;
-            wbs = null;
-            excel = null;
-            GC.Collect();
             return Ok(definition);
         }
         [HttpPost]
@@ -88,12 +76,10 @@ namespace Icris.Excel2Api.Console.controllers
 
             var sheet = path.Split('/')[0];
             var action = path.Split('/')[1];
-
-            Microsoft.Office.Interop.Excel.Application excel = new Microsoft.Office.Interop.Excel.Application();
-            var wbs = excel.Workbooks;
-            var wb = wbs.Open(
+            
+            var wb = 
                 Path.GetDirectoryName(System.Reflection.Assembly.GetEntryAssembly().Location)
-                + $"\\sheets\\{sheet}.xlsx");
+                + $"\\sheets\\{sheet}.xlsx";
             var definition = new JObject();
             //new Model()
             //new ExcelCalculato
@@ -138,17 +124,7 @@ namespace Icris.Excel2Api.Console.controllers
                     });
                     break;
             }
-            //Excel process is a quite persistent bugger, it won't die without a lot of fuss...
-            wb.Close(false);
-            wbs.Close();
-            excel.Quit();
-            Marshal.ReleaseComObject(wb);
-            Marshal.ReleaseComObject(wbs);
-            Marshal.ReleaseComObject(excel);
-            wb = null;
-            wbs = null;
-            excel = null;
-            GC.Collect();
+           
             return Ok(definition);
         }
     }

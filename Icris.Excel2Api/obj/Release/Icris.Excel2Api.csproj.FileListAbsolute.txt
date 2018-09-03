@@ -12,10 +12,9 @@ D:\dev-projectjes\Icris.Excel2Api\Icris.Excel2Api\Icris.Excel2Api\bin\Release\Ic
 D:\dev-projectjes\Icris.Excel2Api\Icris.Excel2Api\Icris.Excel2Api\bin\Release\Icris.Excel2Api.pdb
 D:\dev-projectjes\Icris.Excel2Api\Icris.Excel2Api\Icris.Excel2Api\bin\Release\Newtonsoft.Json.dll
 D:\dev-projectjes\Icris.Excel2Api\Icris.Excel2Api\Icris.Excel2Api\bin\Release\Newtonsoft.Json.xml
-D:\dev-projectjes\Icris.Excel2Api\Icris.Excel2Api\Icris.Excel2Api\obj\Release\Icris.Excel2Api.csprojAssemblyReference.cache
-D:\dev-projectjes\Icris.Excel2Api\Icris.Excel2Api\Icris.Excel2Api\obj\Release\Icris.Excel2Api.csproj.ResolveComReference.cache
 D:\dev-projectjes\Icris.Excel2Api\Icris.Excel2Api\Icris.Excel2Api\obj\Release\Icris.Excel2Api.csproj.CoreCompileInputs.cache
 D:\dev-projectjes\Icris.Excel2Api\Icris.Excel2Api\Icris.Excel2Api\obj\Release\Icris.Excel2Api.csproj.CopyComplete
 D:\dev-projectjes\Icris.Excel2Api\Icris.Excel2Api\Icris.Excel2Api\obj\Release\Icris.Excel2Api.dll
 D:\dev-projectjes\Icris.Excel2Api\Icris.Excel2Api\Icris.Excel2Api\obj\Release\Icris.Excel2Api.pdb
-D:\dev-projectjes\Icris.Excel2Api\Icris.Excel2Api\Icris.Excel2Api\bin\Release\Microsoft.Office.Interop.Excel.dll
+D:\dev-projectjes\Icris.Excel2Api\Icris.Excel2Api\Icris.Excel2Api\bin\Release\EPPlus.dll
+D:\dev-projectjes\Icris.Excel2Api\Icris.Excel2Api\Icris.Excel2Api\bin\Release\EPPlus.xml

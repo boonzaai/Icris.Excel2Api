@@ -1,13 +1,9 @@
-﻿using Microsoft.Office.Interop.Excel;
-using Newtonsoft.Json.Linq;
-using System;
+﻿using Newtonsoft.Json.Linq;
+using OfficeOpenXml;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Reflection;
-using System.Runtime.InteropServices;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Icris.Excel2Api
 {
@@ -16,15 +12,26 @@ namespace Icris.Excel2Api
     /// </summary>
     public class ExcelCalculator
     {
-        Workbook workbook;
+        ExcelPackage excelPackage;
+        bool saveedits;
+        string filename;
+
+        //Workbook workbook;
         /// <summary>
         /// The input/outpu model of the excel sheet
         /// </summary>
         public Model Model { get; private set; }
 
-        public ExcelCalculator(Workbook excel)
+        /// <summary>
+        /// Create an excelcalculator based on a the given template file.
+        /// </summary>
+        /// <param name="filename"></param>
+        public ExcelCalculator(string filename, bool saveedits=false)
         {
-            this.workbook = excel;
+            this.filename = filename;
+            this.excelPackage = new ExcelPackage(new FileInfo(filename), true);
+            this.saveedits = saveedits;
+            //this.workbook = excel;
             ExtractModel();
         }
 
@@ -37,25 +44,32 @@ namespace Icris.Excel2Api
         public bool SetInput(string key, object value)
         {
             var input = this.Model.Inputs[key];
-            var inputsheet = (Worksheet)this.workbook.Sheets["Input"];
-            var valid = (bool)inputsheet.get_Range($"E{input.Row}").Value;
-            var enabled = (bool)inputsheet.get_Range($"F{input.Row}").Value;
-            
+            var inputsheet = this.excelPackage.Workbook.Worksheets["Input"];
+
+            var valid = (bool)inputsheet.Cells[input.Row, 5].Value; // $"E{input.Row}").Value;
+            var enabled = (bool)inputsheet.Cells[input.Row, 6].Value; //.get_Range($"F{input.Row}").Value;
+
             //refresh the model
             //TODO: Seeif this works....
-            if(enabled)
-                inputsheet.Cells[input.Row, 4] = value;
+            if (enabled)
+                inputsheet.SetValue(input.Row, 4, value); //.Cells[input.Row, 4] = value;
+
+            this.excelPackage.Workbook.Calculate();
+
             foreach (var kv in this.Model.Inputs)
             {
-                this.Model.Inputs[kv.Key].Value = (inputsheet.get_Range($"D{kv.Value.Row}")).Value;
-                this.Model.Inputs[kv.Key].Valid = (bool)(inputsheet.get_Range($"E{kv.Value.Row}")).Value;
+                this.Model.Inputs[kv.Key].Value = inputsheet.Cells[kv.Value.Row, 4].Value; // inputsheet.GetValue(kv.Value.Row, 3); // (inputsheet.get_Range($"D{kv.Value.Row}")).Value;
+                this.Model.Inputs[kv.Key].Valid = (bool)(inputsheet.Cells[kv.Value.Row, 5].Value);// get_Range($"E{kv.Value.Row}")).Value;
             }
             //this.Model.Inputs[key].Value = value;
             //this.Model.Inputs[key].Valid = valid;
             //var enabled = (bool)inputsheet.get_Range($"F{input.Row}").Value;
             //this.Model.Inputs[key].Enabled = enabled;
-
-            return valid;
+            if (saveedits)
+            {
+                this.excelPackage.SaveAs(new FileInfo(this.filename));
+            }
+            return this.Model.Inputs[key].Valid;
         }
 
 
@@ -64,43 +78,46 @@ namespace Icris.Excel2Api
         void ExtractModel()
         {
             Model model = new Model();
-            var inputsheet = (Worksheet)this.workbook.Sheets["Input"];
+            var inputsheet = this.excelPackage.Workbook.Worksheets["Input"];
+            //var inputsheet = (Worksheet)this.workbook.Sheets["Input"];
             var inputrow = 2;
-            var input = (string)(inputsheet.get_Range("A2")).Value;
+            var input = (string)inputsheet.Cells[inputrow, 1].Value;
+            //var input = (string)(inp); // .get_Range("A2")).Value;
             while (!string.IsNullOrWhiteSpace(input))
             {
-                var optionsvalue = (string)(inputsheet.get_Range($"G{inputrow}")).Value;
+                var optionsvalue = (string)(inputsheet.Cells[inputrow, 7].Value);// get_Range($"G{inputrow}")).Value;
                 model.Inputs.Add(input, new Input()
                 {
                     Name = input,
-                    Description = (string)(inputsheet.get_Range($"B{inputrow}")).Value,
-                    Unit = (string)(inputsheet.get_Range($"C{inputrow}")).Value,
-                    Value = (inputsheet.get_Range($"D{inputrow}")).Value,
-                    Valid = (bool)(inputsheet.get_Range($"E{inputrow}")).Value,
-                    Enabled = (bool)(inputsheet.get_Range($"F{inputrow}")).Value,
+                    Description = (string)(inputsheet.Cells[inputrow, 2].Value),   // get_Range($"B{inputrow}")).Value,
+                    Unit = (string)(inputsheet.Cells[inputrow, 3].Value),           //get_Range($"C{inputrow}")).Value,
+                    Value = (inputsheet.Cells[inputrow, 4].Value),                  //get_Range($"D{inputrow}")).Value,
+                    Valid = (bool)(inputsheet.Cells[inputrow, 5].Value),           //get_Range($"E{inputrow}")).Value,
+                    Enabled = (bool)(inputsheet.Cells[inputrow, 6].Value),         //get_Range($"F{inputrow}")).Value,
                     Options = string.IsNullOrEmpty(optionsvalue) ? new List<string>() : new List<string>(optionsvalue.Split(',').Select(x => x.Trim())),
-                    Errormessage = (string)(inputsheet.get_Range($"H{inputrow}")).Value,
+                    Errormessage = (string)(inputsheet.Cells[inputrow, 8].Value),  //get_Range($"H{inputrow}")).Value,
                     Row = inputrow
                 });
                 inputrow++;
-                input = (string)(inputsheet.get_Range($"A{inputrow}")).Value;
+                input = (string)inputsheet.Cells[inputrow, 1].Value;             // get_Range($"A{inputrow}")).Value;
             }
 
-            var outputsheet = (Worksheet)this.workbook.Sheets["Output"];
-            var output = (string)(outputsheet.get_Range("A2")).Value;
+            //var outputsheet = (Worksheet)this.workbook.Sheets["Output"];
+            var outputsheet = this.excelPackage.Workbook.Worksheets["Output"];
             var outputrow = 2;
+            var output = (string)(outputsheet.Cells[outputrow, 1].Value);     //.get_Range("A2")).Value;
             while (!string.IsNullOrWhiteSpace(output))
             {
                 model.Outputs.Add(output, new Output()
                 {
                     Name = output,
-                    Description = (string)(outputsheet.get_Range($"B{outputrow}")).Value,
-                    Value = (outputsheet.get_Range($"C{outputrow}")).Value,
-                    Unit = (string)(outputsheet.get_Range($"D{outputrow}")).Value,
+                    Description = (string)(outputsheet.Cells[outputrow, 2].Value),  //get_Range($"B{outputrow}")).Value,
+                    Value = (outputsheet.Cells[outputrow, 3].Value),                //get_Range($"C{outputrow}")).Value,
+                    Unit = (string)(outputsheet.Cells[outputrow, 4].Value),         //get_Range($"D{outputrow}")).Value,
                     Row = outputrow
                 });
                 outputrow++;
-                output = (string)(outputsheet.get_Range($"A{outputrow}")).Value;
+                output = (string)(outputsheet.Cells[outputrow, 1].Value);          //.get_Range($"A{outputrow}")).Value;
             }
 
             this.Model = model;
@@ -113,8 +130,11 @@ namespace Icris.Excel2Api
         public object GetOutput(string key)
         {
             var output = this.Model.Outputs[key];
-            var outputsheet = (Worksheet)this.workbook.Sheets["Output"];
-            var value = outputsheet.get_Range($"C{output.Row}").Value;
+            var outputsheet = this.excelPackage.Workbook.Worksheets["Output"];
+            //outputsheet.Cells[output.Row, 3].Formula = outputsheet.Cells.Formula.Replace(';', ',');
+            //outputsheet.Calculate();
+            outputsheet.Cells[output.Row, 3].Calculate(new OfficeOpenXml.FormulaParsing.ExcelCalculationOption() { AllowCirculareReferences=true });
+            var value = outputsheet.Cells[output.Row, 3].Value;
             return value;
         }
         /// <summary>
