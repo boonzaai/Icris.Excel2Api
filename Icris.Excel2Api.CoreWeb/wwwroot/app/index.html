@@ -1,0 +1,57 @@
+﻿<!DOCTYPE html>
+
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="utf-8" />
+    <title></title>
+    <script src="jquery-3.3.1.min.js"></script>
+    <script src="knockout-3.4.2.js"></script>
+    <script src="app.js"></script>
+    <style>
+        html, body {
+            height: 100%;
+            font-family: Arial;
+        }
+
+        td {
+            vertical-align: top;
+        }
+    </style>
+</head>
+<body>
+    <div style="width:100%; visibility:hidden" id="loading"><img src="wait.gif" style="width:30px;" /></div>
+    <table style="width:100%">
+        <tr>
+            <td style="width:50%">
+                <h1>Inputs</h1>
+                <table data-bind="foreach:inputs">
+                    <tr data-bind="style: { color: valid() ? 'green' : 'red' }, attr:{title: valid()? '':errormessage}">
+                        <td data-bind="text:name"></td>
+                        <td><div data-bind="if:options.length>0"><select data-bind="options:options, value:value"></select></div><div data-bind="if:options.length==0"><input type="text" data-bind="value:value" /></div></td>
+                        <td data-bind="text:unit"></td>
+                    </tr>
+                </table>
+                <button data-bind="click:Calculate">Calculate</button>
+            </td>
+            <td style="width:50%">
+                <h1>Outputs</h1>
+                <table data-bind="foreach:outputs">
+                    <tr>
+                        <td data-bind="text:name"></td>
+                        <td><input type="text" data-bind="value:value" /></td>
+                    </tr>
+                </table>
+            </td>
+        </tr>
+    </table>
+    <script>
+        $(document).ajaxStart(function () {
+            $("#loading").css("visibility", "visible");
+        });
+        $(document).ajaxStop(function () {
+            $("#loading").css("visibility", "hidden");
+        });
+        ko.applyBindings(new app('test'));
+    </script>
+</body>
+</html>

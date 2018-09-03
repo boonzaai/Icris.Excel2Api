@@ -1,0 +1,19 @@
+services:
+  icris.excel2api.coreweb:
+    build:
+      context: D:\dev-projectjes\Icris.Excel2Api\Icris.Excel2Api
+      dockerfile: Icris.Excel2Api.CoreWeb/Dockerfile
+    environment:
+      ASPNETCORE_ENVIRONMENT: Development
+      ASPNETCORE_HTTPS_PORT: '44344'
+      ASPNETCORE_URLS: https://+:443;http://+:80
+    image: icrisexcel2apicoreweb
+    ports:
+    - published: 60090
+      target: 80
+    - published: 44344
+      target: 443
+    volumes:
+    - C:\Users\boonzaai\AppData\Roaming\ASP.NET\Https:/root/.aspnet/https:ro
+    - C:\Users\boonzaai\AppData\Roaming\Microsoft\UserSecrets:/root/.microsoft/usersecrets:ro
+version: '3.4'

@@ -1,0 +1,234 @@
+{
+  "runtimeTarget": {
+    "name": ".NETCoreApp,Version=v2.1",
+    "signature": "ca1b583bdf9f34f3494ab06f756b151369f0669b"
+  },
+  "compilationOptions": {},
+  "targets": {
+    ".NETCoreApp,Version=v2.1": {
+      "Icris.Excel2Api.CoreConsole/1.0.0": {
+        "dependencies": {
+          "Icris.Excel2Api": "1.0.0",
+          "Microsoft.AspNet.WebApi.Owin": "5.2.6",
+          "Microsoft.Owin": "4.0.0",
+          "Microsoft.Owin.Hosting": "4.0.0",
+          "Microsoft.Owin.StaticFiles": "4.0.0",
+          "Newtonsoft.Json": "11.0.2"
+        },
+        "runtime": {
+          "Icris.Excel2Api.CoreConsole.dll": {}
+        }
+      },
+      "Microsoft.AspNet.WebApi.Client/5.2.6": {
+        "dependencies": {
+          "Newtonsoft.Json": "11.0.2",
+          "Newtonsoft.Json.Bson": "1.0.1"
+        },
+        "runtime": {
+          "lib/netstandard2.0/System.Net.Http.Formatting.dll": {
+            "assemblyVersion": "5.2.6.0",
+            "fileVersion": "5.2.60510.0"
+          }
+        }
+      },
+      "Microsoft.AspNet.WebApi.Core/5.2.6": {
+        "dependencies": {
+          "Microsoft.AspNet.WebApi.Client": "5.2.6"
+        },
+        "runtime": {
+          "lib/net45/System.Web.Http.dll": {
+            "assemblyVersion": "5.2.6.0",
+            "fileVersion": "5.2.60510.0"
+          }
+        }
+      },
+      "Microsoft.AspNet.WebApi.Owin/5.2.6": {
+        "dependencies": {
+          "Microsoft.AspNet.WebApi.Core": "5.2.6",
+          "Microsoft.Owin": "4.0.0",
+          "Owin": "1.0.0"
+        },
+        "runtime": {
+          "lib/net45/System.Web.Http.Owin.dll": {
+            "assemblyVersion": "5.2.6.0",
+            "fileVersion": "5.2.60510.0"
+          }
+        }
+      },
+      "Microsoft.Owin/4.0.0": {
+        "dependencies": {
+          "Owin": "1.0.0"
+        },
+        "runtime": {
+          "lib/net451/Microsoft.Owin.dll": {
+            "assemblyVersion": "4.0.0.0",
+            "fileVersion": "4.0.4677.103"
+          }
+        }
+      },
+      "Microsoft.Owin.FileSystems/4.0.0": {
+        "runtime": {
+          "lib/net451/Microsoft.Owin.FileSystems.dll": {
+            "assemblyVersion": "4.0.0.0",
+            "fileVersion": "4.0.4677.103"
+          }
+        }
+      },
+      "Microsoft.Owin.Hosting/4.0.0": {
+        "dependencies": {
+          "Microsoft.Owin": "4.0.0",
+          "Owin": "1.0.0"
+        },
+        "runtime": {
+          "lib/net451/Microsoft.Owin.Hosting.dll": {
+            "assemblyVersion": "4.0.0.0",
+            "fileVersion": "4.0.4677.103"
+          }
+        }
+      },
+      "Microsoft.Owin.StaticFiles/4.0.0": {
+        "dependencies": {
+          "Microsoft.Owin": "4.0.0",
+          "Microsoft.Owin.FileSystems": "4.0.0",
+          "Owin": "1.0.0"
+        },
+        "runtime": {
+          "lib/net451/Microsoft.Owin.StaticFiles.dll": {
+            "assemblyVersion": "4.0.0.0",
+            "fileVersion": "4.0.4677.103"
+          }
+        }
+      },
+      "Newtonsoft.Json/11.0.2": {
+        "runtime": {
+          "lib/netstandard2.0/Newtonsoft.Json.dll": {
+            "assemblyVersion": "11.0.0.0",
+            "fileVersion": "11.0.2.21924"
+          }
+        }
+      },
+      "Newtonsoft.Json.Bson/1.0.1": {
+        "dependencies": {
+          "Newtonsoft.Json": "11.0.2"
+        },
+        "runtime": {
+          "lib/netstandard1.3/Newtonsoft.Json.Bson.dll": {
+            "assemblyVersion": "1.0.0.0",
+            "fileVersion": "1.0.1.20722"
+          }
+        }
+      },
+      "Owin/1.0.0": {
+        "runtime": {
+          "lib/net40/Owin.dll": {
+            "assemblyVersion": "1.0.0.0",
+            "fileVersion": "1.0.0.0"
+          }
+        }
+      },
+      "Icris.Excel2Api/1.0.0": {
+        "dependencies": {
+          "EPPlus": "4.5.2.1"
+        },
+        "runtime": {
+          "Icris.Excel2Api.dll": {}
+        }
+      },
+      "EPPlus.Reference/4.5.2.1": {
+        "runtime": {
+          "EPPlus.dll": {
+            "assemblyVersion": "4.5.2.1",
+            "fileVersion": "4.5.2.1"
+          }
+        }
+      }
+    }
+  },
+  "libraries": {
+    "Icris.Excel2Api.CoreConsole/1.0.0": {
+      "type": "project",
+      "serviceable": false,
+      "sha512": ""
+    },
+    "Microsoft.AspNet.WebApi.Client/5.2.6": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-rMDlyePoxggkmN/qgha1+BR2Uy+dOr38xKCQOPfVNKGY07R2nYJGMTKJFE1XFgwD70RYUNazf2fqutjJF18XgQ==",
+      "path": "microsoft.aspnet.webapi.client/5.2.6",
+      "hashPath": "microsoft.aspnet.webapi.client.5.2.6.nupkg.sha512"
+    },
+    "Microsoft.AspNet.WebApi.Core/5.2.6": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-QMFixs/MvKZXjfUbV0gXxF85LKi+keu/zJKv13upg/JlcxJ+wdLSYzyHO/sgPPUuFVstgndK6Zt3VduWeqFmHQ==",
+      "path": "microsoft.aspnet.webapi.core/5.2.6",
+      "hashPath": "microsoft.aspnet.webapi.core.5.2.6.nupkg.sha512"
+    },
+    "Microsoft.AspNet.WebApi.Owin/5.2.6": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-Ky6Oc072KIVOcgtX5ilsWHbRUwp9WYE97ZFj2YRiDqpsTjTqo38Xsao6zejEdFpdobbAlquCM661ohqS2C68oQ==",
+      "path": "microsoft.aspnet.webapi.owin/5.2.6",
+      "hashPath": "microsoft.aspnet.webapi.owin.5.2.6.nupkg.sha512"
+    },
+    "Microsoft.Owin/4.0.0": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-3TNVMkgF+yhesPYwq67ZOcLGtfKEupNNXcqVO4FRNjkQ1v0gBNb3k8CSuJonrCC8EAUp+OeUYrDTQePiyaVzpw==",
+      "path": "microsoft.owin/4.0.0",
+      "hashPath": "microsoft.owin.4.0.0.nupkg.sha512"
+    },
+    "Microsoft.Owin.FileSystems/4.0.0": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-Cc4QWDDjEm3f5ofG4G7cpJJu31xx2Za8xeAS11r3tseWJg/wDC1x7g15TErlWR9mpalrhLReyz40xsr3VCXtbQ==",
+      "path": "microsoft.owin.filesystems/4.0.0",
+      "hashPath": "microsoft.owin.filesystems.4.0.0.nupkg.sha512"
+    },
+    "Microsoft.Owin.Hosting/4.0.0": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-rAkxeyiIliRbMZyPxo83QE+UY7HNTsFOH9+wqQTcQyWBVbYkBQp373meNt4+DpupMB56A1BopLDeyoX9DZJrbA==",
+      "path": "microsoft.owin.hosting/4.0.0",
+      "hashPath": "microsoft.owin.hosting.4.0.0.nupkg.sha512"
+    },
+    "Microsoft.Owin.StaticFiles/4.0.0": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-R/xGCYMdXDmCwwB2uYqAipj0z3qJbXAXgaXpPHBldOy5lufyFxcSyv4guNUS3nFYJt7tYnSZx2fF91gK4FRiiw==",
+      "path": "microsoft.owin.staticfiles/4.0.0",
+      "hashPath": "microsoft.owin.staticfiles.4.0.0.nupkg.sha512"
+    },
+    "Newtonsoft.Json/11.0.2": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-IvJe1pj7JHEsP8B8J8DwlMEx8UInrs/x+9oVY+oCD13jpLu4JbJU2WCIsMRn5C4yW9+DgkaO8uiVE5VHKjpmdQ==",
+      "path": "newtonsoft.json/11.0.2",
+      "hashPath": "newtonsoft.json.11.0.2.nupkg.sha512"
+    },
+    "Newtonsoft.Json.Bson/1.0.1": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-5PYT/IqQ+UK31AmZiSS102R6EsTo+LGTSI8bp7WAUqDKaF4wHXD8U9u4WxTI1vc64tYi++8p3dk3WWNqPFgldw==",
+      "path": "newtonsoft.json.bson/1.0.1",
+      "hashPath": "newtonsoft.json.bson.1.0.1.nupkg.sha512"
+    },
+    "Owin/1.0.0": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-OseTFniKmyp76mEzOBwIKGBRS5eMoYNkMKaMXOpxx9jv88+b6mh1rSaw43vjBOItNhaLFG3d0a20PfHyibH5sw==",
+      "path": "owin/1.0.0",
+      "hashPath": "owin.1.0.0.nupkg.sha512"
+    },
+    "Icris.Excel2Api/1.0.0": {
+      "type": "project",
+      "serviceable": false,
+      "sha512": ""
+    },
+    "EPPlus.Reference/4.5.2.1": {
+      "type": "reference",
+      "serviceable": false,
+      "sha512": ""
+    }
+  }
+}

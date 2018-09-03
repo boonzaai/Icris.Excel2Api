@@ -14,7 +14,7 @@
             The input/outpu model of the excel sheet
             </summary>
         </member>
-        <member name="M:Icris.Excel2Api.ExcelCalculator.#ctor(System.String)">
+        <member name="M:Icris.Excel2Api.ExcelCalculator.#ctor(System.String,System.Boolean)">
             <summary>
             Create an excelcalculator based on a the given template file.
             </summary>

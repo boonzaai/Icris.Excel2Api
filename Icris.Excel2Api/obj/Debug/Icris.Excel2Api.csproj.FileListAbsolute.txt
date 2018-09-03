@@ -18,3 +18,4 @@ D:\dev-projectjes\Icris.Excel2Api\Icris.Excel2Api\Icris.Excel2Api\obj\Debug\Icri
 D:\dev-projectjes\Icris.Excel2Api\Icris.Excel2Api\Icris.Excel2Api\obj\Debug\Icris.Excel2Api.pdb
 D:\dev-projectjes\Icris.Excel2Api\Icris.Excel2Api\Icris.Excel2Api\bin\Debug\EPPlus.dll
 D:\dev-projectjes\Icris.Excel2Api\Icris.Excel2Api\Icris.Excel2Api\bin\Debug\EPPlus.xml
+D:\dev-projectjes\Icris.Excel2Api\Icris.Excel2Api\Icris.Excel2Api\obj\Debug\Icris.Excel2Api.csprojAssemblyReference.cache

@@ -1,0 +1,20 @@
+version: '3.4'
+
+services:
+  icris.excel2api.coreweb:
+    image: icrisexcel2apicoreweb:dev
+    build:
+      target: base
+    environment:
+      - DOTNET_USE_POLLING_FILE_WATCHER=1
+      #- NUGET_FALLBACK_PACKAGES=$container_paths_to_fallback_packages_icris.excel2api.coreweb$
+    volumes:
+      - D:\dev-projectjes\Icris.Excel2Api\Icris.Excel2Api\Icris.Excel2Api.CoreWeb:/app
+      - C:\Users\boonzaai\vsdbg\vs2017u5:/remote_debugger:ro
+#$nuget_volume_mapping_icris.excel2api.coreweb$
+    entrypoint: tail -f /dev/null
+    labels:
+      com.microsoft.visualstudio.debuggee.program: "dotnet"
+      #com.microsoft.visualstudio.debuggee.arguments: " $debuggee_arguments_probing_paths_icris.excel2api.coreweb$ bin/Debug/netcoreapp2.1/Icris.Excel2Api.CoreWeb.dll"
+      com.microsoft.visualstudio.debuggee.workingdirectory: "/app"
+      com.microsoft.visualstudio.debuggee.killprogram: "/bin/bash -c \"if PID=$$(pidof -x dotnet); then kill $$PID; fi\""

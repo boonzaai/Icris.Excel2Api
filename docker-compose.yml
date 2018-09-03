@@ -1,0 +1,8 @@
+version: '3.4'
+
+services:
+  icris.excel2api.coreweb:
+    image: ${DOCKER_REGISTRY}icrisexcel2apicoreweb
+    build:
+      context: .
+      dockerfile: Icris.Excel2Api.CoreWeb/Dockerfile

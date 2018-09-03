@@ -1,0 +1,34 @@
+services:
+  icris.excel2api.coreweb:
+    build:
+      context: D:\dev-projectjes\Icris.Excel2Api\Icris.Excel2Api
+      dockerfile: Icris.Excel2Api.CoreWeb/Dockerfile
+      target: base
+    entrypoint: tail -f /dev/null
+    environment:
+      ASPNETCORE_ENVIRONMENT: Development
+      ASPNETCORE_HTTPS_PORT: '44344'
+      ASPNETCORE_URLS: https://+:443;http://+:80
+      DOTNET_USE_POLLING_FILE_WATCHER: '1'
+      NUGET_FALLBACK_PACKAGES: /root/.nuget/fallbackpackages
+    image: icrisexcel2apicoreweb:dev
+    labels:
+      com.microsoft.visualstudio.debuggee.arguments: ' --additionalProbingPath /root/.nuget/packages
+        --additionalProbingPath /root/.nuget/fallbackpackages  bin/Debug/netcoreapp2.1/Icris.Excel2Api.CoreWeb.dll'
+      com.microsoft.visualstudio.debuggee.killprogram: /bin/bash -c "if PID=$$(pidof
+        -x dotnet); then kill $$PID; fi"
+      com.microsoft.visualstudio.debuggee.program: dotnet
+      com.microsoft.visualstudio.debuggee.workingdirectory: /app
+    ports:
+    - published: 60090
+      target: 80
+    - published: 44344
+      target: 443
+    volumes:
+    - D:\dev-projectjes\Icris.Excel2Api\Icris.Excel2Api\Icris.Excel2Api.CoreWeb:/app:rw
+    - C:\Users\boonzaai\vsdbg\vs2017u5:/remote_debugger:ro
+    - C:\Users\boonzaai\AppData\Roaming\ASP.NET\Https:/root/.aspnet/https:ro
+    - C:\Users\boonzaai\AppData\Roaming\Microsoft\UserSecrets:/root/.microsoft/usersecrets:ro
+    - C:\Program Files\dotnet\sdk\NuGetFallbackFolder:/root/.nuget/fallbackpackages:ro
+    - C:\Users\boonzaai\.nuget\packages:/root/.nuget/packages:ro
+version: '3.4'
