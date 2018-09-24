@@ -55,6 +55,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ExcelCalculator.cs" />
+    <Compile Include="ExcelReader.cs" />
     <Compile Include="Input.cs" />
     <Compile Include="Model.cs" />
     <Compile Include="Output.cs" />

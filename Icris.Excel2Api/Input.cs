@@ -20,6 +20,7 @@ namespace Icris.Excel2Api
         public List<string> Options { get; set; }
         public bool Enabled { get; set; }
         public bool Valid { get; set; }
+        public bool Visible { get; set; }
         public int Row { get; set; }
     }
 }

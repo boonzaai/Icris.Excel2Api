@@ -1,5 +1,6 @@
 ﻿using Newtonsoft.Json.Linq;
 using OfficeOpenXml;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -26,13 +27,28 @@ namespace Icris.Excel2Api
         /// Create an excelcalculator based on a the given template file.
         /// </summary>
         /// <param name="filename"></param>
-        public ExcelCalculator(string filename, bool saveedits=false)
+        public ExcelCalculator(string filename, bool saveedits = false)
         {
             this.filename = filename;
             this.excelPackage = new ExcelPackage(new FileInfo(filename), true);
             this.saveedits = saveedits;
             //this.workbook = excel;
             ExtractModel();
+        }
+        public void Save()
+        {
+            this.excelPackage.SaveAs(new FileInfo(this.filename));
+        }
+
+        public void Validate()
+        {
+            var inputsheet = this.excelPackage.Workbook.Worksheets["Input"];
+            this.excelPackage.Workbook.Calculate();
+            foreach (var kv in this.Model.Inputs)
+            {
+                this.Model.Inputs[kv.Key].Value = inputsheet.Cells[kv.Value.Row, 4].Value; // inputsheet.GetValue(kv.Value.Row, 3); // (inputsheet.get_Range($"D{kv.Value.Row}")).Value;
+                this.Model.Inputs[kv.Key].Valid = (bool)(Convert.ChangeType(inputsheet.Cells[kv.Value.Row, 5].Value == null ? 0 : inputsheet.Cells[kv.Value.Row, 5].Value, typeof(bool)));// get_Range($"E{kv.Value.Row}")).Value;
+            }
         }
 
         /// <summary>
@@ -46,29 +62,25 @@ namespace Icris.Excel2Api
             var input = this.Model.Inputs[key];
             var inputsheet = this.excelPackage.Workbook.Worksheets["Input"];
 
-            var valid = (bool)inputsheet.Cells[input.Row, 5].Value; // $"E{input.Row}").Value;
-            var enabled = (bool)inputsheet.Cells[input.Row, 6].Value; //.get_Range($"F{input.Row}").Value;
+            var valid = (bool)Convert.ChangeType(inputsheet.Cells[input.Row, 5].Value == null ? 0 : inputsheet.Cells[input.Row, 5].Value, typeof(bool)); // $"E{input.Row}").Value;
+            var enabled = (bool)Convert.ChangeType(inputsheet.Cells[input.Row, 6].Value == null ? 0 : inputsheet.Cells[input.Row, 6].Value, typeof(bool)); //.get_Range($"F{input.Row}").Value;
 
             //refresh the model
             //TODO: Seeif this works....
             if (enabled)
                 inputsheet.SetValue(input.Row, 4, value); //.Cells[input.Row, 4] = value;
 
-            this.excelPackage.Workbook.Calculate();
+            //this.excelPackage.Workbook.Calculate();
 
-            foreach (var kv in this.Model.Inputs)
-            {
-                this.Model.Inputs[kv.Key].Value = inputsheet.Cells[kv.Value.Row, 4].Value; // inputsheet.GetValue(kv.Value.Row, 3); // (inputsheet.get_Range($"D{kv.Value.Row}")).Value;
-                this.Model.Inputs[kv.Key].Valid = (bool)(inputsheet.Cells[kv.Value.Row, 5].Value);// get_Range($"E{kv.Value.Row}")).Value;
-            }
+            
             //this.Model.Inputs[key].Value = value;
             //this.Model.Inputs[key].Valid = valid;
             //var enabled = (bool)inputsheet.get_Range($"F{input.Row}").Value;
             //this.Model.Inputs[key].Enabled = enabled;
-            if (saveedits)
-            {
-                this.excelPackage.SaveAs(new FileInfo(this.filename));
-            }
+            //if (saveedits)
+            //{
+            //    this.excelPackage.SaveAs(new FileInfo(this.filename));
+            //}
             return this.Model.Inputs[key].Valid;
         }
 
@@ -85,17 +97,22 @@ namespace Icris.Excel2Api
             //var input = (string)(inp); // .get_Range("A2")).Value;
             while (!string.IsNullOrWhiteSpace(input))
             {
-                var optionsvalue = (string)(inputsheet.Cells[inputrow, 7].Value);// get_Range($"G{inputrow}")).Value;
+                var optionsvalue = (string)(inputsheet.Cells[inputrow, 8].Value);// get_Range($"G{inputrow}")).Value;
+                bool valid = (bool)Convert.ChangeType(inputsheet.Cells[inputrow, 5].Value == null ? 0 : inputsheet.Cells[inputrow, 5].Value, typeof(bool));
+                bool enabled = (bool)Convert.ChangeType(inputsheet.Cells[inputrow, 6].Value == null ? 0 : inputsheet.Cells[inputrow, 6].Value, typeof(bool));
+                bool visible = (bool)Convert.ChangeType(inputsheet.Cells[inputrow, 7].Value == null ? 0 : inputsheet.Cells[inputrow, 7].Value, typeof(bool));
+
                 model.Inputs.Add(input, new Input()
                 {
                     Name = input,
                     Description = (string)(inputsheet.Cells[inputrow, 2].Value),   // get_Range($"B{inputrow}")).Value,
                     Unit = (string)(inputsheet.Cells[inputrow, 3].Value),           //get_Range($"C{inputrow}")).Value,
                     Value = (inputsheet.Cells[inputrow, 4].Value),                  //get_Range($"D{inputrow}")).Value,
-                    Valid = (bool)(inputsheet.Cells[inputrow, 5].Value),           //get_Range($"E{inputrow}")).Value,
-                    Enabled = (bool)(inputsheet.Cells[inputrow, 6].Value),         //get_Range($"F{inputrow}")).Value,
+                    Valid = valid,           //get_Range($"E{inputrow}")).Value,
+                    Enabled = enabled,         //get_Range($"F{inputrow}")).Value,
+                    Visible = visible,
                     Options = string.IsNullOrEmpty(optionsvalue) ? new List<string>() : new List<string>(optionsvalue.Split(',').Select(x => x.Trim())),
-                    Errormessage = (string)(inputsheet.Cells[inputrow, 8].Value),  //get_Range($"H{inputrow}")).Value,
+                    Errormessage = (string)(inputsheet.Cells[inputrow, 9].Value),  //get_Range($"H{inputrow}")).Value,
                     Row = inputrow
                 });
                 inputrow++;
@@ -133,7 +150,7 @@ namespace Icris.Excel2Api
             var outputsheet = this.excelPackage.Workbook.Worksheets["Output"];
             //outputsheet.Cells[output.Row, 3].Formula = outputsheet.Cells.Formula.Replace(';', ',');
             //outputsheet.Calculate();
-            outputsheet.Cells[output.Row, 3].Calculate(new OfficeOpenXml.FormulaParsing.ExcelCalculationOption() { AllowCirculareReferences=true });
+            outputsheet.Cells[output.Row, 3].Calculate(new OfficeOpenXml.FormulaParsing.ExcelCalculationOption() { AllowCirculareReferences = true });
             var value = outputsheet.Cells[output.Row, 3].Value;
             return value;
         }
@@ -236,11 +253,7 @@ namespace Icris.Excel2Api
             return swaggerdoc;
         }
 
-        public void Validate()
-        {
-            //throw new NotImplementedException();
-        }
-
+        
         JObject OutputsToSwaggerDefinition()
         {
 

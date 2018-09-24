@@ -41,3 +41,4 @@ D:\dev-projectjes\Icris.Excel2Api\Icris.Excel2Api\Icris.Excel2Api.Tests\obj\Debu
 D:\dev-projectjes\Icris.Excel2Api\Icris.Excel2Api\Icris.Excel2Api.Tests\obj\Debug\Icris.Excel2Api.Tests.pdb
 D:\dev-projectjes\Icris.Excel2Api\Icris.Excel2Api\Icris.Excel2Api.Tests\bin\Debug\EPPlus.dll
 D:\dev-projectjes\Icris.Excel2Api\Icris.Excel2Api\Icris.Excel2Api.Tests\bin\Debug\EPPlus.xml
+D:\dev-projectjes\Icris.Excel2Api\Icris.Excel2Api\Icris.Excel2Api.Tests\bin\Debug\data\datarecords.xlsx
