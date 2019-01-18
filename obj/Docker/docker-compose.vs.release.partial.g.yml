@@ -3,7 +3,7 @@ version: '3.4'
 services:
   icris.excel2api.coreweb:
     volumes:
-      - C:\Users\boonzaai\vsdbg\vs2017u5:/remote_debugger:ro
+      - C:\Users\AndréBoonzaaijer\vsdbg\vs2017u5:/remote_debugger:ro
     entrypoint: tail -f /dev/null
     labels:
       com.microsoft.visualstudio.debuggee.program: "dotnet"

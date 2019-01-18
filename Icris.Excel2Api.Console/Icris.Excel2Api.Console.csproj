@@ -82,9 +82,9 @@
   <ItemGroup>
     <None Include="App.config" />
     <None Include="packages.config" />
-    <None Include="sheets\test.xlsx">
+    <EmbeddedResource Include="sheets\test.xlsx">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
+    </EmbeddedResource>
     <None Include="www\swagger\swagger-ui-bundle.js.map">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>

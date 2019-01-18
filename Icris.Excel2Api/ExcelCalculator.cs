@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Reflection;
+using System.Threading;
 
 namespace Icris.Excel2Api
 {
@@ -29,25 +30,53 @@ namespace Icris.Excel2Api
         /// <param name="filename"></param>
         public ExcelCalculator(string filename, bool saveedits = false)
         {
-            this.filename = filename;
-            this.excelPackage = new ExcelPackage(new FileInfo(filename), true);
-            this.saveedits = saveedits;
-            //this.workbook = excel;
-            ExtractModel();
+            try
+            {
+                //!!TODO: Locking mechanism !!
+                this.filename = filename;
+                while (!File.Exists(filename))
+                    Thread.Sleep(100);
+                this.excelPackage = new ExcelPackage(new FileInfo(filename), true);
+                this.saveedits = saveedits;
+                //this.workbook = excel;
+                ExtractModel();
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine("Failing creating excelcalculator: " + e.Message);
+            }
         }
         public void Save()
         {
-            this.excelPackage.SaveAs(new FileInfo(this.filename));
+            try
+            {
+                this.excelPackage.SaveAs(new FileInfo(this.filename));
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine("Error saving file. Will just continue now. Sorry. " + e.Message);
+            }
         }
 
         public void Validate()
         {
-            var inputsheet = this.excelPackage.Workbook.Worksheets["Input"];
-            this.excelPackage.Workbook.Calculate();
-            foreach (var kv in this.Model.Inputs)
+            Thread.Sleep(100);
+            try
             {
-                this.Model.Inputs[kv.Key].Value = inputsheet.Cells[kv.Value.Row, 4].Value; // inputsheet.GetValue(kv.Value.Row, 3); // (inputsheet.get_Range($"D{kv.Value.Row}")).Value;
-                this.Model.Inputs[kv.Key].Valid = (bool)(Convert.ChangeType(inputsheet.Cells[kv.Value.Row, 5].Value == null ? 0 : inputsheet.Cells[kv.Value.Row, 5].Value, typeof(bool)));// get_Range($"E{kv.Value.Row}")).Value;
+                var inputsheet = this.excelPackage.Workbook.Worksheets["Input"];
+                this.excelPackage.Workbook.Calculate();
+                foreach (var kv in this.Model.Inputs)
+                {
+                    this.Model.Inputs[kv.Key].Value = inputsheet.Cells[kv.Value.Row, 4].Value; // inputsheet.GetValue(kv.Value.Row, 3); // (inputsheet.get_Range($"D{kv.Value.Row}")).Value;
+                    if (inputsheet.Cells[kv.Value.Row, 5].Value.GetType().Name == "ExcelErrorValue")
+                        this.Model.Inputs[kv.Key].Valid = false;
+                    else
+                        this.Model.Inputs[kv.Key].Valid = (bool)(Convert.ChangeType(inputsheet.Cells[kv.Value.Row, 5].Value == null ? 0 : inputsheet.Cells[kv.Value.Row, 5].Value, typeof(bool)));// get_Range($"E{kv.Value.Row}")).Value;
+                }
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine("Failed to validate (dat rijmt ook nog) " + e.Message);
             }
         }
 
@@ -62,19 +91,21 @@ namespace Icris.Excel2Api
             var input = this.Model.Inputs[key];
             var inputsheet = this.excelPackage.Workbook.Worksheets["Input"];
 
-            var valid = (bool)Convert.ChangeType(inputsheet.Cells[input.Row, 5].Value == null ? 0 : inputsheet.Cells[input.Row, 5].Value, typeof(bool)); // $"E{input.Row}").Value;
+            var valid = false;
+            if (inputsheet.Cells[input.Row, 5].Value.GetType().Name != "ExcelErrorValue")
+                valid = (bool)Convert.ChangeType(inputsheet.Cells[input.Row, 5].Value == null ? 0 : inputsheet.Cells[input.Row, 5].Value, typeof(bool)); // $"E{input.Row}").Value;
             var enabled = (bool)Convert.ChangeType(inputsheet.Cells[input.Row, 6].Value == null ? 0 : inputsheet.Cells[input.Row, 6].Value, typeof(bool)); //.get_Range($"F{input.Row}").Value;
 
             //refresh the model
             //TODO: Seeif this works....
-            if (enabled)
-                inputsheet.SetValue(input.Row, 4, value); //.Cells[input.Row, 4] = value;
+            //if (enabled)
+            inputsheet.SetValue(input.Row, 4, value); //.Cells[input.Row, 4] = value;
 
-            //this.excelPackage.Workbook.Calculate();
+            this.excelPackage.Workbook.Calculate();
 
-            
+
             //this.Model.Inputs[key].Value = value;
-            //this.Model.Inputs[key].Valid = valid;
+            this.Model.Inputs[key].Valid = inputsheet.GetValue<bool>(input.Row, 5);
             //var enabled = (bool)inputsheet.get_Range($"F{input.Row}").Value;
             //this.Model.Inputs[key].Enabled = enabled;
             //if (saveedits)
@@ -98,7 +129,9 @@ namespace Icris.Excel2Api
             while (!string.IsNullOrWhiteSpace(input))
             {
                 var optionsvalue = (string)(inputsheet.Cells[inputrow, 8].Value);// get_Range($"G{inputrow}")).Value;
-                bool valid = (bool)Convert.ChangeType(inputsheet.Cells[inputrow, 5].Value == null ? 0 : inputsheet.Cells[inputrow, 5].Value, typeof(bool));
+                bool valid = false;
+                if (inputsheet.Cells[inputrow, 5].Value.GetType().Name != "ExcelErrorValue")
+                    valid = (bool)Convert.ChangeType(inputsheet.Cells[inputrow, 5].Value == null ? 0 : inputsheet.Cells[inputrow, 5].Value, typeof(bool));
                 bool enabled = (bool)Convert.ChangeType(inputsheet.Cells[inputrow, 6].Value == null ? 0 : inputsheet.Cells[inputrow, 6].Value, typeof(bool));
                 bool visible = (bool)Convert.ChangeType(inputsheet.Cells[inputrow, 7].Value == null ? 0 : inputsheet.Cells[inputrow, 7].Value, typeof(bool));
 
@@ -253,7 +286,7 @@ namespace Icris.Excel2Api
             return swaggerdoc;
         }
 
-        
+
         JObject OutputsToSwaggerDefinition()
         {
 

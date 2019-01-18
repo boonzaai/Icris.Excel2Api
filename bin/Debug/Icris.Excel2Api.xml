@@ -1,0 +1,46 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>Icris.Excel2Api</name>
+    </assembly>
+    <members>
+        <member name="T:Icris.Excel2Api.ExcelCalculator">
+            <summary>
+            Exposes an excelsheet's logic
+            </summary>
+        </member>
+        <member name="P:Icris.Excel2Api.ExcelCalculator.Model">
+            <summary>
+            The input/outpu model of the excel sheet
+            </summary>
+        </member>
+        <member name="M:Icris.Excel2Api.ExcelCalculator.#ctor(System.String,System.Boolean)">
+            <summary>
+            Create an excelcalculator based on a the given template file.
+            </summary>
+            <param name="filename"></param>
+        </member>
+        <member name="M:Icris.Excel2Api.ExcelCalculator.SetInput(System.String,System.Object)">
+            <summary>
+            Set an input value by key/value.
+            </summary>
+            <param name="key"></param>
+            <param name="value"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Icris.Excel2Api.ExcelCalculator.GetOutput(System.String)">
+            <summary>
+            Get an output value by key
+            </summary>
+            <param name="key"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Icris.Excel2Api.ExcelCalculator.ToSwagger(System.String)">
+            <summary>
+            Create a Swagger JObject (serializable as a swagger.json file for automatic swagger-ui consumption)
+            </summary>
+            <param name="prefix"></param>
+            <returns></returns>
+        </member>
+    </members>
+</doc>

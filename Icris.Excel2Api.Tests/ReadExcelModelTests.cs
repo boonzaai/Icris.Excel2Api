@@ -46,7 +46,9 @@ namespace Icris.Excel2Api.Tests
         {
             GetTestWorkbook();
             var model = new ExcelCalculator(tempfile);
+
             Assert.AreEqual(false, model.SetInput("Width", 12));
+            
             Assert.AreEqual(true, model.SetInput("Length", 8));
             Cleanup();
         }
